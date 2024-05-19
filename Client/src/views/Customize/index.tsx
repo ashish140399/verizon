@@ -346,10 +346,10 @@ const Customize: React.FC<Props> = () => {
                 target.scaleY = scale;
             });
 
-            const paddingTop = 250;
-            const paddingBottom = 75;
-            const paddingRight = 50;
-            const paddingLeft = 50;
+            const paddingTop = 10;
+            const paddingBottom = 10;
+            const paddingRight = 10;
+            const paddingLeft = 10;
             canvas.on("object:moving", function (e) {
                 const target = e.target;
                 const padding = 10;
