@@ -1,0 +1,89 @@
+@font-face {
+  font-family: Verizon;
+  src: url("assets/fonts/VerizonNHGDS-Bold.otf");
+}
+
+.app-container {
+  max-width: 1180px;
+  max-height: 800px;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow around the app */
+}
+//1180*800
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+body {
+  margin: 0;
+  font-family: Verizon;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000000;
+  // background: url("./assets/images/pg_bg2.png"), url("./assets/images/pg_bg1.png");
+  // background-size: cover;
+  // background-position: center center;
+  overflow: hidden;
+}
+
+code {
+  font-family: Verizon;
+}
+.MuiInputBase-formControl {
+  color: #000 !important;
+  background: #fff;
+  // .MuiInputBase-input {
+  //     padding: 8px !important;
+  // }
+  .MuiOutlinedInput-notchedOutline {
+    border: 1px solid #fff !important;
+
+    border-radius: 0 !important;
+  }
+}
+
+.MuiMenu-paper {
+  .MuiMenuItem-root {
+    font-size: 28px;
+  }
+}
+
+.btnglobal {
+  border: 0;
+  font-size: 80px;
+  color: #fff;
+  outline: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  background: none;
+  top: 50%;
+  transform: translateY(-50%);
+  &.btnright {
+    right: 20px;
+  }
+  &.btnleft {
+    left: 20px;
+  }
+}
+
+.nav-link {
+  text-decoration: none;
+}
+
+.logo_btm {
+  position: absolute;
+  bottom: 40px;
+  height: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
