@@ -46,7 +46,7 @@ function App() {
         name: "Black Rock",
     });
     const [inventoryDetails, setInventoryDetails] = React.useState([]);
-    const [selectedItem, setSelectedItem] = React.useState("S 24");
+    const [selectedItem, setSelectedItem] = React.useState("");
     const [usagetime, setUsagetime] = React.useState({
         start: new Date(),
         end: new Date(),
