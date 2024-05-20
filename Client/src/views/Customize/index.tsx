@@ -349,9 +349,9 @@ const Customize: React.FC<Props> = () => {
             });
 
             const paddingTop = 27;
-            const paddingBottom = 50;
-            const paddingRight = 24;
-            const paddingLeft = 24;
+            const paddingBottom = 45;
+            const paddingRight = 18;
+            const paddingLeft = 18;
             canvas.on("object:moving", function (e) {
                 const target = e.target;
 

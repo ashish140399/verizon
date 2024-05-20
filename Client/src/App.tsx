@@ -46,7 +46,7 @@ function App() {
         name: "Suarez",
     });
     const [inventoryDetails, setInventoryDetails] = React.useState([]);
-    const [selectedItem, setSelectedItem] = React.useState("");
+    const [selectedItem, setSelectedItem] = React.useState("S 24");
     const [usagetime, setUsagetime] = React.useState({
         start: new Date(),
         end: new Date(),
