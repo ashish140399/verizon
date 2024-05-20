@@ -251,8 +251,8 @@ const Customize: React.FC<Props> = () => {
             let topshift = 0;
             if (appDetails.id === 1) {
                 topshift = 0;
-            } else {
-                topshift = -10;
+            } else if (appDetails.id === 2) {
+                topshift = 0;
             }
             fabric.Image.fromURL(imgurl1, (bgimage1) => {
                 canvas.setBackgroundImage(
