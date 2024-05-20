@@ -20,7 +20,7 @@ const Customize: React.FC<Props> = () => {
     const { selectedItem, appDetails, setUsagetime, usagetime, userDetails } =
         useContext(MyContext);
     // const [selcdesign, setSelcdesign] = useState(selectedCover);
-
+    const [bgImage2, setBgImage2] = useState(null);
     const [screennum, setScreennum] = useState(2);
     var deleteIcon =
         "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg version='1.1' id='Ebene_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='595.275px' height='595.275px' viewBox='200 215 230 470' xml:space='preserve'%3E%3Ccircle style='fill:%23F44336;' cx='299.76' cy='439.067' r='218.516'/%3E%3Cg%3E%3Crect x='267.162' y='307.978' transform='matrix(0.7071 -0.7071 0.7071 0.7071 -222.6202 340.6915)' style='fill:white;' width='65.545' height='262.18'/%3E%3Crect x='266.988' y='308.153' transform='matrix(0.7071 0.7071 -0.7071 0.7071 398.3889 -83.3116)' style='fill:white;' width='65.544' height='262.179'/%3E%3C/g%3E%3C/svg%3E";
@@ -204,6 +204,46 @@ const Customize: React.FC<Props> = () => {
         cornerSize: 24,
     });
 
+    const reorderCanvasObjects = (e) => {
+        if (bgImage2 && e.target !== bgImage2) {
+            canvas.moveTo(bgImage2, canvas.getObjects().length - 1);
+            canvas.discardActiveObject();
+            canvas.renderAll();
+        }
+    };
+
+    // useEffect(() => {
+    //     if (canvas) {
+    //         canvas.clear();
+    //         canvas.renderAll();
+    //     }
+    // }, [canvas]);
+
+    // updates the canvas when the design is finalised
+    useEffect(() => {
+        if (canvas) {
+            const objectarray = canvas.getObjects();
+
+            if (designfinalised) {
+                canvas.forEachObject(function (object) {
+                    object.selectable = false;
+                    object.hasBorders = false;
+                    object.hasControls = false;
+                });
+                // objectarray[1].visible = false;
+                canvas.discardActiveObject().renderAll();
+            } else {
+                for (let i = 0; i < objectarray.length; i++) {
+                    objectarray[i].selectable = true;
+                    objectarray[i].hasBorders = true;
+                    objectarray[i].hasControls = true;
+                }
+
+                // objectarray[1].visible = true;
+                canvas.setActiveObject(objectarray[0]);
+            }
+        }
+    }, [designfinalised]);
     // generates the canvas at the initial load of the page
     useEffect(() => {
         if (canvas) {
@@ -237,68 +277,23 @@ const Customize: React.FC<Props> = () => {
 
                     // Add the second image to the canvas
                     canvas.add(bgimage2);
-
+                    // Store bgimage2 in state
+                    setBgImage2(bgimage2);
+                    // Move the image to the top
+                    canvas.moveTo(bgimage2, canvas.getObjects().length - 1);
+                    canvas.renderAll();
                     // Move the image to the background (just above the first background image)
-                    canvas.sendToBack(bgimage2);
+                    // canvas.bringToFront(bgimage2);
                 });
             });
+            // Add event listener to reorder objects when new object is added
+            // canvas.on("object:added", (e) => {
+            //     if (bgImage2 && e.target !== bgImage2) {
+            //         canvas.moveTo(bgImage2, canvas.getObjects().length - 1);
+            //     }
+            // });
         }
     }, [canvas]);
-
-    useEffect(() => {
-        if (canvas) {
-            canvas.clear();
-            canvas.renderAll();
-        }
-    }, [canvas]);
-
-    // updates the canvas when the design is finalised
-    useEffect(() => {
-        if (canvas) {
-            const objectarray = canvas.getObjects();
-
-            if (designfinalised) {
-                canvas.forEachObject(function (object) {
-                    object.selectable = false;
-                    object.hasBorders = false;
-                    object.hasControls = false;
-                });
-                // objectarray[1].visible = false;
-                canvas.discardActiveObject().renderAll();
-            } else {
-                for (let i = 0; i < objectarray.length; i++) {
-                    objectarray[i].selectable = true;
-                    objectarray[i].hasBorders = true;
-                    objectarray[i].hasControls = true;
-                }
-
-                // objectarray[1].visible = true;
-                canvas.setActiveObject(objectarray[0]);
-            }
-        }
-    }, [designfinalised]);
-
-    // it will update the canvas when we will changing screens i.e. will be selecing size of flops
-    // useEffect(() => {
-    //     if (canvas) {
-    //         const objectarray = canvas.getObjects();
-
-    //         if (objectarray.length > 0) {
-    //             if (screennum == 1) {
-    //                 for (let i = 0; i < objectarray.length; i++) {
-    //                     objectarray[i].visible = false;
-    //                     canvas.discardActiveObject().renderAll();
-    //                 }
-    //             } else {
-    //                 for (let i = 0; i < objectarray.length; i++) {
-    //                     objectarray[i].visible = true;
-    //                     canvas.setActiveObject(objectarray[0]);
-    //                     canvas.renderAll();
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }, [screennum]);
 
     // update the canvas with selected artboard and refresh canvas
     useEffect(() => {
@@ -317,9 +312,6 @@ const Customize: React.FC<Props> = () => {
                         defaultWidth / img.width,
                         defaultHeight / img.height
                     );
-                    // Calculate the scale based on the default size
-                    const scaleX = defaultWidth / img.width;
-                    const scaleY = defaultHeight / img.height;
 
                     img.set({
                         selectable: true, // allow object to be selected/dragged
@@ -332,27 +324,36 @@ const Customize: React.FC<Props> = () => {
                         scaleX: scale,
                         scaleY: scale,
                     });
+
                     canvas.selection = true;
-                    canvas.setActiveObject(img).add(img);
+                    canvas.add(img);
                     canvas.centerObject(img);
                     setCanvasObjects([...canvasObjects, img]);
                 });
             }
+            // Add event listener to reorder objects when new object is added
+            canvas.on("object:added", (e) => {
+                if (bgImage2) {
+                    reorderCanvasObjects(e);
+                }
+            });
 
             canvas.on("object:scaling", function (e) {
                 const target = e.target;
                 const scale = target.scaleX; // Use scaleX or scaleY, as they are equal
 
                 target.scaleY = scale;
+                if (bgImage2) {
+                    reorderCanvasObjects(e);
+                }
             });
 
-            const paddingTop = 250;
-            const paddingBottom = 75;
-            const paddingRight = 50;
-            const paddingLeft = 50;
+            const paddingTop = 10;
+            const paddingBottom = 40;
+            const paddingRight = 10;
+            const paddingLeft = 10;
             canvas.on("object:moving", function (e) {
                 const target = e.target;
-                const padding = 10;
 
                 // Constrain movement within canvas boundaries with 10px padding
                 if (target.left < paddingLeft) {
@@ -378,6 +379,9 @@ const Customize: React.FC<Props> = () => {
                         canvas.height -
                         paddingBottom -
                         target.height * target.scaleY;
+                }
+                if (bgImage2) {
+                    reorderCanvasObjects(e);
                 }
             });
 
@@ -410,7 +414,19 @@ const Customize: React.FC<Props> = () => {
                         paddingBottom -
                         target.height * target.scaleY;
                 }
+                if (bgImage2) {
+                    reorderCanvasObjects(e);
+                    console.log("in obejctmodify");
+                }
             });
+            // Ensure cleanup to prevent multiple event bindings
+            return () => {
+                canvas.off("object:added", reorderCanvasObjects);
+                canvas.off("mouse:up", reorderCanvasObjects);
+                canvas.off("object:scaling", reorderCanvasObjects);
+                canvas.off("object:moving", reorderCanvasObjects);
+                canvas.off("object:modified", reorderCanvasObjects);
+            };
         }
     }, [selGraphic]);
     return (
