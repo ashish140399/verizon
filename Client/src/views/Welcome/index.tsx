@@ -50,6 +50,7 @@ const Layout = styled.div`
         bottom: 7vh;
         left: 50%;
         transform: translateX(-50%);
+        display: none;
     }
 `;
 

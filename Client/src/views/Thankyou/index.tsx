@@ -42,6 +42,7 @@ const Layout = styled.div`
     .logo {
         width: 32vh;
         bottom: 9vh;
+        display: none;
     }
 
     .text {
