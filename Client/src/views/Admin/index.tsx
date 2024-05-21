@@ -130,7 +130,7 @@ const getSvgContent = (imageUrl) => {
 //         });
 // };
 
-const downloadIt = (imageUrl) => {
+const downloadIt = (res, imageUrl) => {
     fetch(imageUrl)
         .then((response) => {
             if (!response.ok) {
@@ -143,8 +143,13 @@ const downloadIt = (imageUrl) => {
             const url = URL.createObjectURL(blob);
             console.log("Blob created:", blob); // Optionally log the blob
 
-            // Open the blob URL in a new tab
-            window.open(url, "_blank");
+            // Create an anchor element and set the download attribute
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "downloaded_image"; // Specify the download file name
+            document.body.appendChild(a);
+            a.click(); // Trigger a click on the anchor element
+            document.body.removeChild(a); // Remove the anchor element from the DOM
         })
         .catch((error) => {
             console.error("Error downloading image:", error);
@@ -247,8 +252,8 @@ const InnerTableRow = ({ res, index }) => {
     const generatePrint = async () => {
         await document.fonts.load("16px Gin Montserrat Aldine");
         // Initialize Fabric.js
-        let widthcanvas = 2850;
-        let heightcanvas = 1200;
+        let widthcanvas = 2550;
+        let heightcanvas = 4200;
         const canvas = new fabric.Canvas(canvasRef.current, {
             targetFindTolerance: 5,
             width: widthcanvas,
@@ -285,110 +290,42 @@ const InnerTableRow = ({ res, index }) => {
                         fabric.Image.fromURL(
                             reader.result as string,
                             (img) => {
-                                const maxW = 700;
-                                const maxH = 500;
-                                const scale = Math.min(
-                                    maxW / img.width,
-                                    maxH / img.height
-                                );
-
-                                img.scale(scale);
+                                // const scale = Math.min(
+                                //     maxW / img.width,
+                                //     maxH / img.height
+                                // );
                                 canvas.centerObject(img);
                                 img.set({
                                     // top: text.top + text.height,
-                                    left: img.left - 100,
+                                    width: 955,
+                                    height: 1931,
                                     selectable: false,
                                     evented: false,
                                 });
 
                                 canvas.add(img);
-                                const text = new fabric.Text(`jj`, {
-                                    fontSize: 40,
-                                    originX: "left",
-                                    originY: "bottom",
-                                    fontFamily: "Gin",
-                                    top:
-                                        img.top +
-                                        img.getScaledHeight() / 2 -
-                                        30, // Adjust the vertical position of the text
-                                    left: img.left + img.getScaledWidth() + 50, // Center horizontally
-                                    selectable: false,
-                                    evented: false,
-                                });
-                                canvas.add(text);
-                                const text2 = new fabric.Text(
-                                    `${res?.userdetails?.firstName}`,
+                                const text = new fabric.Text(
+                                    `${res?.userdetails.firstName} - ${res?.itemname}`,
                                     {
-                                        fontSize: 40,
-                                        originX: "left",
-                                        originY: "bottom",
+                                        fontSize: 140,
                                         fontFamily: "Gin",
-                                        top:
-                                            img.top +
-                                            img.getScaledHeight() / 2 +
-                                            30, // Adjust the vertical position of the text
-                                        left:
-                                            img.left +
-                                            img.getScaledWidth() +
-                                            50, // Center horizontally
                                         selectable: false,
                                         evented: false,
                                     }
                                 );
-                                canvas.add(text2);
+                                canvas.centerObject(text);
+                                text.set({ top: 300 });
+                                canvas.add(text);
+
                                 canvas.renderAll();
-                                const objects = [img, text, text2];
-                                // Calculate bounding box and scale factor
-                                const scaleFactor = 4; // Increase this value to increase the export quality
-                                let minX = Infinity,
-                                    minY = Infinity,
-                                    maxX = 0,
-                                    maxY = 0;
-                                objects.forEach((obj) => {
-                                    const objBounding = obj.getBoundingRect();
-                                    minX = Math.min(minX, objBounding.left);
-                                    minY = Math.min(minY, objBounding.top);
-                                    maxX = Math.max(
-                                        maxX,
-                                        objBounding.left + objBounding.width
-                                    );
-                                    maxY = Math.max(
-                                        maxY,
-                                        objBounding.top + objBounding.height
-                                    );
-                                });
-
-                                // Prepare a temporary canvas
-                                const tempCanvas = new fabric.Canvas(
-                                    canvasReftemp.current,
-                                    {
-                                        targetFindTolerance: 5,
-                                        width: (maxX - minX) * scaleFactor,
-                                        height: (maxY - minY) * scaleFactor,
-                                    }
-                                );
-
-                                // Copy and scale objects to temporary canvas
-                                objects.forEach((obj) => {
-                                    const clone = fabric.util.object.clone(obj);
-                                    clone.set({
-                                        scaleX: obj.scaleX * scaleFactor,
-                                        scaleY: obj.scaleY * scaleFactor,
-                                        left: (obj.left - minX) * scaleFactor,
-                                        top: (obj.top - minY) * scaleFactor,
-                                    });
-                                    tempCanvas.add(clone);
-                                });
-
-                                tempCanvas.renderAll();
 
                                 // Export the scaled canvas
-                                const highResDataURL = tempCanvas.toDataURL({
+                                const highResDataURL = canvas.toDataURL({
                                     format: "png",
                                     left: 0,
                                     top: 0,
-                                    width: tempCanvas.width,
-                                    height: tempCanvas.height,
+                                    width: canvas.width,
+                                    height: canvas.height,
                                 });
                                 // console.log(tempCanvas.width, highResDataURL);
 
@@ -410,9 +347,6 @@ const InnerTableRow = ({ res, index }) => {
                                 // setCroppedcanvas(highResDataURL); // This logs the base64 image URL of the high-resolution image
 
                                 resolve(); // Resolve the promise after everything is loaded and rendered
-
-                                // Cleanup temporary canvas to free up memory
-                                tempCanvas.dispose();
                             },
                             { crossOrigin: "anonymous" }
                         );
@@ -513,7 +447,7 @@ const InnerTableRow = ({ res, index }) => {
                     <Button
                         variant="contained"
                         // disabled={!res.canvasuri.endsWith(".svg")}
-                        onClick={() => downloadIt(res.canvasuri)}
+                        onClick={() => downloadIt(res, res.canvasuri)}
                     >
                         Download
                     </Button>
@@ -521,7 +455,6 @@ const InnerTableRow = ({ res, index }) => {
                 <TableCell align="center">
                     <div className="canvaswrapper" style={{ display: "none" }}>
                         <canvas ref={canvasRef} />
-                        <canvas ref={canvasReftemp} />
                     </div>
                     <Button
                         variant="contained"
