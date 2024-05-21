@@ -146,7 +146,7 @@ const downloadIt = (res, imageUrl) => {
             // Create an anchor element and set the download attribute
             const a = document.createElement("a");
             a.href = url;
-            a.download = "downloaded_image"; // Specify the download file name
+            a.download = `${res?.id}_${res?.userdetails.firstName}`; // Specify the download file name
             document.body.appendChild(a);
             a.click(); // Trigger a click on the anchor element
             document.body.removeChild(a); // Remove the anchor element from the DOM
