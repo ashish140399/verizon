@@ -66,7 +66,7 @@ const Customize: React.FC<Props> = () => {
         var dataURLpng = await canvas.toDataURL({
             format: "png",
             quality: 10,
-            multiplier: 2,
+            multiplier: 3.22,
         });
         // const modifiedSVG = base64ToSVG(
         //     dataURLpng,
@@ -168,7 +168,7 @@ const Customize: React.FC<Props> = () => {
             setCanvas(
                 new fabric.Canvas("demo", {
                     targetFindTolerance: 5,
-                    width: 298,
+                    width: 296.731,
                     height: 600,
                 })
             );
