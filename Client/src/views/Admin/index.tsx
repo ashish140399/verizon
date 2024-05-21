@@ -311,6 +311,7 @@ const InnerTableRow = ({ res, index }) => {
                                         fontFamily: "Gin",
                                         selectable: false,
                                         evented: false,
+                                        scaleX: -1,
                                     }
                                 );
                                 canvas.centerObject(text);
