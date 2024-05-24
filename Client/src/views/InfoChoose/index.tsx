@@ -14,7 +14,8 @@ const InfoChoose: React.FC<Props> = () => {
     const [sizeaccept, setSizeaccept] = React.useState<string>("");
     // const [selectedCover, setSelectedItem] = useState(selectedGradient);
     const [inventory, setInventory] = React.useState([]);
-    const { setSelectedItem, appDetails } = React.useContext(MyContext);
+    const { setSelectedItem, selectedItem, appDetails } =
+        React.useContext(MyContext);
 
     const handleAcceptChange = (event: SelectChangeEvent) => {
         setSizeaccept(String(event.target.value));
@@ -98,6 +99,17 @@ const InfoChoose: React.FC<Props> = () => {
                             defaultValue={sizeaccept}
                             value={sizeaccept}
                             onChange={handleAcceptChange}
+                            displayEmpty
+                            renderValue={(selected) => {
+                                if (selected.length === 0) {
+                                    return (
+                                        <span style={{ color: "#000" }}>
+                                            Select Your Phone
+                                        </span>
+                                    );
+                                }
+                                return selected;
+                            }}
                         >
                             {inventory.length > 0 &&
                                 inventory.map((item) => (
@@ -122,7 +134,10 @@ const InfoChoose: React.FC<Props> = () => {
                         <button className="btnglobal btnleft">{`<`}</button>
                     </Link>
                     <Link className="nav-link" to="/customize">
-                        <button className="btnglobal btnright">{`>`}</button>
+                        <button
+                            className="btnglobal btnright"
+                            disabled={selectedItem === "" ? true : false}
+                        >{`>`}</button>
                     </Link>
                 </Footer>
                 <img
