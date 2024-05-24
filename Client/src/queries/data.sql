@@ -100,6 +100,10 @@ INSERT INTO `graphic_list` (`appid`, `graphic_name`, `graphic_img_name`, `graphi
 (1, 'Bottleneck', '5', 0,100),
 (1, 'Napa Valley', '6', 0,100);
 
+INSERT INTO `graphic_list` (`appid`, `graphic_name`, `graphic_img_name`, `graphic_used_count`,`graphic_avl_count`) VALUES
+(1, 'Flower 1', '7', 0,100),
+(1, 'Flower 2', '8', 0,100);
+
 
 
 INSERT INTO `graphic_list` (`appid`,`ig`, `graphic_name`, `graphic_img_name`, `graphic_used_count`,`graphic_avl_count`) VALUES

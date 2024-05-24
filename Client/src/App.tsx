@@ -43,7 +43,7 @@ function App() {
     const [appDetails, setAppDetails] = React.useState({
         id: 1,
         idname: "app1",
-        name: "Suarez",
+        name: "Black Rock",
     });
     const [inventoryDetails, setInventoryDetails] = React.useState([]);
     const [selectedItem, setSelectedItem] = React.useState("");
