@@ -337,7 +337,15 @@ const Customize: React.FC<Props> = () => {
                     reorderCanvasObjects(e);
                 }
             });
+            canvas.on("mouse:down", (e) => {
+                if (e.target) {
+                    if (canvas.getObjects().length - 1 >= 2)
+                        canvas.moveTo(e.target, canvas.getObjects().length - 2);
+                }
 
+                // console.log(e);
+                console.log("I am object and I am selected");
+            });
             canvas.on("object:scaling", function (e) {
                 const target = e.target;
                 const scale = target.scaleX; // Use scaleX or scaleY, as they are equal
@@ -423,6 +431,7 @@ const Customize: React.FC<Props> = () => {
             return () => {
                 canvas.off("object:added", reorderCanvasObjects);
                 canvas.off("mouse:up", reorderCanvasObjects);
+                canvas.off("mouse:down", reorderCanvasObjects);
                 canvas.off("object:scaling", reorderCanvasObjects);
                 canvas.off("object:moving", reorderCanvasObjects);
                 canvas.off("object:modified", reorderCanvasObjects);
