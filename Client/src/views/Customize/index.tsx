@@ -337,7 +337,15 @@ const Customize: React.FC<Props> = () => {
                     reorderCanvasObjects(e);
                 }
             });
+            canvas.on("mouse:down", (e) => {
+                if (e.target) {
+                    if (canvas.getObjects().length - 1 >= 2)
+                        canvas.moveTo(e.target, canvas.getObjects().length - 2);
+                }
 
+                // console.log(e);
+                console.log("I am object and I am selected");
+            });
             canvas.on("object:scaling", function (e) {
                 const target = e.target;
                 const scale = target.scaleX; // Use scaleX or scaleY, as they are equal
@@ -349,7 +357,7 @@ const Customize: React.FC<Props> = () => {
             });
 
             const paddingTop = 27;
-            const paddingBottom = 48;
+            const paddingBottom = 38;
             const paddingRight = 22;
             const paddingLeft = 22;
             canvas.on("object:moving", function (e) {
@@ -422,6 +430,7 @@ const Customize: React.FC<Props> = () => {
             // Ensure cleanup to prevent multiple event bindings
             return () => {
                 canvas.off("object:added", reorderCanvasObjects);
+                // canvas.off("mouse:down", reorderCanvasObjects);
                 canvas.off("mouse:up", reorderCanvasObjects);
                 canvas.off("object:scaling", reorderCanvasObjects);
                 canvas.off("object:moving", reorderCanvasObjects);
@@ -460,7 +469,6 @@ const Customize: React.FC<Props> = () => {
                             <div className="sliderwrapper page2">
                                 <div className="selrow1">
                                     {graphicinventory.map((item, index) => {
-                                        console.log(item, index);
                                         if (
                                             index + 1 <=
                                             graphicinventory.length / 2
