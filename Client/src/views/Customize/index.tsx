@@ -605,13 +605,13 @@ const BottomWrapper = styled.div`
         .selrow1,
         .selrow2 {
             position: absolute;
-            height: 58vh;
+            height: 73vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             flex-wrap: wrap;
             justify-content: center;
-            top: 24.7vh;
+            top: 16.7vh;
             ${SelectorBox} {
                 height: 12.5vh;
                 width: 12.5vh;
@@ -625,10 +625,10 @@ const BottomWrapper = styled.div`
             }
         }
         .selrow1 {
-            right: 64vw;
+            right: 72vw;
         }
         .selrow2 {
-            left: 64vw;
+            left: 72vw;
         }
     }
 `;
