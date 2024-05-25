@@ -45,121 +45,114 @@ const Customize: React.FC<Props> = () => {
             });
     }, []);
     console.log("graphicinventory", graphicinventory);
-    const downloadimage = async () => {
-        const objectarray = canvas.getObjects();
-
-        // if (
-        //     customizeInfo.selected === "text" ||
-        //     customizeInfo.selected === "monogram"
-        // ) {
-        //     objectarray.forEach((object) => {
-        //         object.set("fill", "#000");
-        //     });
-        //     // canvas.renderAll();
-        // } else {
-        //     objectarray.forEach((object) => {
-        //         object.set("fill", "#000");
-        //     });
-        // }
-
-        setShowloader(true);
-        var dataURLpng = await canvas.toDataURL({
-            format: "png",
-            quality: 10,
-            multiplier: 3.22,
-        });
-        // const modifiedSVG = base64ToSVG(
-        //     dataURLpng,
-        //     canvas.width,
-        //     canvas.height
-        // );
-        // console.log(modifiedSVG);
-
-        // console.log("dataURLpng", dataURLpng);
-        // var modifiedSVG = canvas.toSVG();
-        // console.log(dataURL);
-        // let modifiedSVG;
-
-        // console.log(modifiedSVG);
-
-        // var blob = new Blob([dataURL], {
-        //     type: "image/svg+xml;charset=utf-8",
-        // });
-        // var url = URL.createObjectURL(blob);
-
-        // var link = document.createElement("a");
-        // link.download = `canvas.png`;
-        // link.href = dataURLpng;
-        // link.click();
-
-        // if (customizeInfo.selected === "graphic") {
-        //     modifiedSVG = await replaceImageURLWithBase64(dataURL);
-        // } else {
-        //     modifiedSVG = await dataURL;
-        // }
-
-        // modifiedSVG = await dataURL;
-
-        // var blob = new Blob([modifiedSVG], {
-        //     type: "image/svg+xml;charset=utf-8",
-        // });
-        // var url = URL.createObjectURL(blob);
-
-        // var link = document.createElement("a");
-        // link.download = `canvas.svg`;
-        // link.href = url;
-        // link.click();
-
-        // console.log(modifiedSVG);
-        setUsagetime({
-            ...usagetime,
-            end: new Date(),
-        });
-
-        const timeDifference =
-            usagetime.start.getTime() - usagetime.end.getTime();
-        console.log("timeDifference", timeDifference);
-        // console.log(
-        //     "LLOGGGGGGGGGGGGGGGGG",
-        //     JSON.stringify(userDetails),
-        //     selectedItem,
-        //     // customizeInfo["graphic"].value.toString(),
-        //     JSON.stringify(modifiedSVG),
-        //     timeDifference
-        // );
-
-        axios
-            .post(`${process.env.REACT_APP_API_URL}/api/savepng`, {
-                userDetails: JSON.stringify(userDetails),
-                itemname: JSON.stringify(selectedItem),
-                canvasuri: dataURLpng,
-                timeDiff: timeDifference,
-                appDetails: JSON.stringify(appDetails),
-            })
-            .then((response) => {
-                console.log(response.data);
-                setShowloader(false);
-
-                navigate("/thankyou");
-            })
-            .catch((error) => {
-                console.error(error);
+    const updateBgImage2Url = (newImageUrl: string, callback?: () => void) => {
+        if (bgImage2) {
+            bgImage2.setSrc(newImageUrl, () => {
+                if (canvas) {
+                    canvas.renderAll();
+                    if (callback) {
+                        callback();
+                    }
+                }
             });
+        }
+    };
+    const downloadimage = async () => {
+        const newImageUrl = `images/templates/Borders/${appDetails.idname}/${selectedItem}_bord.png`;
+        setShowloader(true);
+        // Replace bgimage2 with the new image, then download
+        updateBgImage2Url(newImageUrl, async () => {
+            if (canvas) {
+                setShowloader(true);
+                var dataURLpng = await canvas.toDataURL({
+                    format: "png",
+                    quality: 10,
+                    multiplier: 3.22,
+                });
+                // const modifiedSVG = base64ToSVG(
+                //     dataURLpng,
+                //     canvas.width,
+                //     canvas.height
+                // );
+                // console.log(modifiedSVG);
+
+                // console.log("dataURLpng", dataURLpng);
+                // var modifiedSVG = canvas.toSVG();
+                // console.log(dataURL);
+                // let modifiedSVG;
+
+                // console.log(modifiedSVG);
+
+                // var blob = new Blob([dataURL], {
+                //     type: "image/svg+xml;charset=utf-8",
+                // });
+                // var url = URL.createObjectURL(blob);
+
+                // var link = document.createElement("a");
+                // link.download = `canvas.png`;
+                // link.href = dataURLpng;
+                // link.click();
+
+                // if (customizeInfo.selected === "graphic") {
+                //     modifiedSVG = await replaceImageURLWithBase64(dataURL);
+                // } else {
+                //     modifiedSVG = await dataURL;
+                // }
+
+                // modifiedSVG = await dataURL;
+
+                // var blob = new Blob([modifiedSVG], {
+                //     type: "image/svg+xml;charset=utf-8",
+                // });
+                // var url = URL.createObjectURL(blob);
+
+                // var link = document.createElement("a");
+                // link.download = `canvas.svg`;
+                // link.href = url;
+                // link.click();
+
+                // console.log(modifiedSVG);
+                setUsagetime({
+                    ...usagetime,
+                    end: new Date(),
+                });
+
+                const timeDifference =
+                    usagetime.start.getTime() - usagetime.end.getTime();
+                console.log("timeDifference", timeDifference);
+                // console.log(
+                //     "LLOGGGGGGGGGGGGGGGGG",
+                //     JSON.stringify(userDetails),
+                //     selectedItem,
+                //     // customizeInfo["graphic"].value.toString(),
+                //     JSON.stringify(modifiedSVG),
+                //     timeDifference
+                // );
+
+                axios
+                    .post(`${process.env.REACT_APP_API_URL}/api/savepng`, {
+                        userDetails: JSON.stringify(userDetails),
+                        itemname: JSON.stringify(selectedItem),
+                        canvasuri: dataURLpng,
+                        timeDiff: timeDifference,
+                        appDetails: JSON.stringify(appDetails),
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                        setShowloader(false);
+
+                        navigate("/thankyou");
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }
+        });
     };
 
     const canvasRef = useRef(null);
 
     const rightWrapperRef = useRef(null);
-    const handleMouseWheel = (event) => {
-        const delta = event.e.deltaY;
-        let zoom = canvas.getZoom();
-        zoom = zoom + delta / 1100;
-        if (zoom > 20) zoom = 20; // set maximum zoom level
-        if (zoom < 0.01) zoom = 0.01; // set minimum zoom level
-        canvas.zoomToPoint({ x: event.e.offsetX, y: event.e.offsetY }, zoom);
-        event.e.preventDefault();
-        event.e.stopPropagation();
-    };
 
     // creates and saves the canvas element
     useEffect(() => {
@@ -274,7 +267,7 @@ const Customize: React.FC<Props> = () => {
                         evented: false, // Disables events on the image
                         top: topshift,
                     });
-
+                    bgimage2.name = "borderImage";
                     // Add the second image to the canvas
                     canvas.add(bgimage2);
                     // Store bgimage2 in state
