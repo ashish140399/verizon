@@ -245,6 +245,8 @@ const Customize: React.FC<Props> = () => {
             let topshift = 0;
             if (appDetails.id === 1) {
                 topshift = 0;
+            } else if (appDetails.id === 3) {
+                topshift = 0;
             } else {
                 topshift = -10;
             }
