@@ -41,9 +41,9 @@ function App() {
     // const location = useLocation();
     console.log(window.location.pathname);
     const [appDetails, setAppDetails] = React.useState({
-        id: 1,
-        idname: "app1",
-        name: "Black Rock",
+        id: 4,
+        idname: "app4",
+        name: "Gov Ball",
     });
     const [inventoryDetails, setInventoryDetails] = React.useState([]);
     const [selectedItem, setSelectedItem] = React.useState("");

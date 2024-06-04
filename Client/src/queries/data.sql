@@ -78,6 +78,19 @@ INSERT INTO `inventory_list` (`appid`,`iv`, `item_name`, `img_name`, `used_count
 (2,11, 'S23', 'S23',  0,100, CURRENT_TIMESTAMP);
 
 
+INSERT INTO `inventory_list` (`appid`, `item_name`, `img_name`, `used_count`,`available_items`, `updation_time`) VALUES
+(4, 'IP 12 - 12 PRO', 'IP 12 - 12 PRO',  0,100, CURRENT_TIMESTAMP),
+(4, 'IP 13 Pro', 'IP 13 Pro',  0,100, CURRENT_TIMESTAMP),
+(4, 'IP 13', 'IP 13',  0,100, CURRENT_TIMESTAMP),
+(4, 'IP 14 PRO', 'IP 14 PRO',  0,100, CURRENT_TIMESTAMP),
+(4, 'IP 14', 'IP 14',  0,100, CURRENT_TIMESTAMP),
+(4, 'IP 15 PLUS', 'IP 15 PLUS',  0,100, CURRENT_TIMESTAMP),
+(4, 'IP 15 PRO', 'IP 15 PRO',  0,100, CURRENT_TIMESTAMP),
+(4, 'IP 15', 'IP 15',  0,100, CURRENT_TIMESTAMP),
+(4, 'S 24', 'S 24',  0,100, CURRENT_TIMESTAMP),
+(4, 'S23', 'S23',  0,100, CURRENT_TIMESTAMP);
+
+
 CREATE TABLE IF NOT EXISTS graphic_list(
     ig INT AUTO_INCREMENT PRIMARY KEY,
     appname TEXT,
@@ -117,3 +130,15 @@ INSERT INTO `graphic_list` (`appid`,`ig`, `graphic_name`, `graphic_img_name`, `g
 (2,8, 'Flags', '8', 0,100),
 (2,9, 'Petles', '9', 0,100),
 (2,10, 'Suenos', '10', 0,100);
+
+
+
+INSERT INTO `graphic_list` (`appid`, `graphic_name`, `graphic_img_name`, `graphic_used_count`,`graphic_avl_count`) VALUES
+(4, '1', '1', 0,100),
+(4, '2', '2', 0,100),
+(4, '3', '3', 0,100),
+(4, '4', '4', 0,100),
+(4, '5', '5', 0,100),
+(4, '6', '6', 0,100),
+(4, '7', '7', 0,100),
+(4, '8', '8', 0,100);
