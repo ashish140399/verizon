@@ -90,6 +90,10 @@ INSERT INTO `inventory_list` (`appid`, `item_name`, `img_name`, `used_count`,`av
 (4, 'S 24', 'S 24',  0,100, CURRENT_TIMESTAMP),
 (4, 'S23', 'S23',  0,100, CURRENT_TIMESTAMP);
 
+INSERT INTO `inventory_list` (`appid`, `item_name`, `img_name`, `used_count`,`available_items`, `updation_time`) VALUES
+(4, 'S 24 ULTRA', 'S 24 ULTRA',  0,100, CURRENT_TIMESTAMP),
+(4, 'S 23 ULTRA', 'S 23 ULTRA',  0,100, CURRENT_TIMESTAMP);
+
 
 CREATE TABLE IF NOT EXISTS graphic_list(
     ig INT AUTO_INCREMENT PRIMARY KEY,
